@@ -664,6 +664,11 @@ class StableDiffusionPipeline(DiffusionPipeline, TextualInversionLoaderMixin):
         # 6. Prepare extra step kwargs. TODO: Logic should ideally just be moved out of the pipeline
         extra_step_kwargs = self.prepare_extra_step_kwargs(generator, eta)
 
+        if callback is not None:
+            i = -1
+            t = -1
+            callback(i, t, latents)
+
         # 7. Denoising loop
         num_warmup_steps = len(timesteps) - num_inference_steps * self.scheduler.order
         with self.progress_bar(total=num_inference_steps) as progress_bar:
